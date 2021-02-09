@@ -1,0 +1,50 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+
+	<id>bundle-assembly</id>
+	<formats>
+		<format>tar.gz</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<baseDirectory>${project.name}</baseDirectory>
+
+	<fileSets>
+		<!-- @template: Enter fileSet per component, i.e., apps, cluster, docker, k8s, pod -->
+		<fileSet>
+			<directory>apps</directory>
+			<outputDirectory>apps</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>k8s</directory>
+			<outputDirectory>k8s</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+		
+		<!-- @template: Set executable permissions to all scripts here for each fileSet. -->
+		<!-- Executable permissions -->
+		<fileSet>
+			<directory>cluster/myapp/bin_sh/</directory>
+			<outputDirectory>k8s/myapp/bin_sh/</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+			<fileMode>0755</fileMode>
+			<directoryMode>0755</directoryMode>
+		</fileSet>
+		<fileSet>
+			<directory>k8s/mykube/bin_sh/</directory>
+			<outputDirectory>k8s/mykube/bin_sh/</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+			<fileMode>0755</fileMode>
+			<directoryMode>0755</directoryMode>
+		</fileSet>
+	</fileSets>
+</assembly>

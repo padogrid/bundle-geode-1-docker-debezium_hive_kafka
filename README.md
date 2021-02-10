@@ -4,7 +4,7 @@ This bundle integrates Geode with Debezium and Apache Hive for ingesting initial
 
 ## Installing Bundle
 
-```console
+```bash
 install_bundle -download bundle-geode-1-docker-debezium_hive_kafka
 ```
 
@@ -31,14 +31,14 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 
 We must first build the demo by running the `build_app` command as shown below. This command copies the Geode and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode Debezium Kafka connector can include them in its class path. It also downloads the Hive JDBC driver jar and its dependencies in the `padogrid/lib/jdbc` directory.
 
-```console
+```bash
 cd_docker debezium_hive_kafka; cd bin_sh
 ./build_app
 ```
 
 Upon successful build, the `padogrid` directory should have jar files similar to the following:
 
-```console
+```bash
 cd_docker debezium_hive_kafka
 tree padogrid
 ```
@@ -48,54 +48,57 @@ padogrid
 ├── etc
 │   └── client-cache.xml
 ├── lib
-│   ├── geode-addon-common-0.9.3-SNAPSHOT.jar
-│   ├── geode-addon-core-4-0.9.3-SNAPSHOT.jar
-│   ├── geode-enterprise-all-4.0.1.jar
-│   └── jdbc
-│       ├── commons-logging-1.2.jar
-│       ├── curator-client-2.12.0.jar
-│       ├── guava-19.0.jar
-│       ├── hadoop-common-2.6.0.jar
-│       ├── hive-common-3.1.2.jar
-│       ├── hive-jdbc-3.1.2.jar
-│       ├── hive-metastore-3.1.2.jar
-│       ├── hive-serde-3.1.2.jar
-│       ├── hive-service-3.1.2.jar
-│       ├── hive-service-rpc-3.1.2.jar
-│       ├── httpclient-4.5.2.jar
-│       ├── httpcore-4.4.4.jar
-│       ├── libthrift-0.9.3.jar
-│       └── slf4j-api-1.7.10.jar
+│   ├── ...
+│   ├── geode-addon-core-0.9.5-SNAPSHOT.jar
+│   ├── geode-common-1.13.1.jar
+│   ├── geode-connectors-1.13.1.jar
+│   ├── geode-core-1.13.1.jar
+│   ├── ...
+│   ├── jdbc
+│   │   ├── commons-logging-1.2.jar
+│   │   ├── curator-client-2.12.0.jar
+│   │   ├── guava-19.0.jar
+│   │   ├── hadoop-common-2.6.0.jar
+│   │   ├── hive-common-3.1.2.jar
+│   │   ├── hive-jdbc-3.1.2.jar
+│   │   ├── hive-metastore-3.1.2.jar
+│   │   ├── hive-serde-3.1.2.jar
+│   │   ├── hive-service-3.1.2.jar
+│   │   ├── hive-service-rpc-3.1.2.jar
+│   │   ├── httpclient-4.5.2.jar
+│   │   ├── httpcore-4.4.4.jar
+│   │   ├── libthrift-0.9.3.jar
+│   │   └── slf4j-api-1.7.10.jar
+│   ├── ...
 ├── log
 └── plugins
-    └── geode-addon-core-4-0.9.3-SNAPSHOT-tests.jar
+    └── geode-addon-core-0.9.5-SNAPSHOT-tests.jar
 ```
-
 
 ## Creating Geode Docker Containers
 
 Let's create a Geode cluster to run on Docker containers as follows.
 
-```console
+```bash
 create_docker -cluster geode -host host.docker.internal
 cd_docker geode
 ```
 
 If you are running Docker Desktop, then the host name, `host.docker.internal`, is accessible from the containers as well as the host machine. You can run the `ping` command to check the host name.
 
-```console
+```bash
 ping host.docker.internal
 ```
 
 If `host.docker.internal` is not defined then you will need to use the host IP address that can be accessed from both the Docker containers and the host machine. Run `create_docker -?` or `man create_docker` to see the usage.
 
-```console
+```bash
 create_docker -?
 ```
 
 If you are using a host IP other than `host.docker.internal` then you must also make the change in the Debezium Geode connector configuration file as follows.
 
-```console
+```bash
 cd_docker debezium_hive_kafka
 vi padogrid/etc/client-cache.xml
 ```
@@ -111,22 +114,6 @@ Replace `host.docker.internal` in `client-cache.xml` with your host IP address.
    ...
 </client-cache>
 ```
-
-If you will be running the Desktop app then you also need to register the `org.geode.demo.nw.data.PortableFactoryImpl` class in the Geode cluster. The `Customer` and `Order` classes implement the `VersionedPortable` interface.
-
-```bash
-cd_docker geode
-vi padogrid/etc/geode.xml
-```
-
-Add the following in the `geode.xml` file.
-
-```xml
-                        <portable-factory factory-id="1">
-                        org.geode.demo.nw.data.PortableFactoryImpl
-                        </portable-factory>
-```
-
 ## Creating `perf_test` app
 
 Create and build `perf_test` for ingesting mock data into MySQL:
@@ -448,7 +435,7 @@ Output:
 
 ### Check Kafka Connect
 
-```console
+```bash
 # Check status
 curl -Ss -H "Accept:application/json" localhost:8083/ | jq
 
@@ -470,7 +457,7 @@ The last command should display the connectors that we registered previously.
 
 To view the map contents, run the `read_cache` command as follows:
 
-```console
+```bash
 cd_app perf_test_hive; cd bin_sh
 ./read_cache nw/customers
 ./read_cache nw/orders
@@ -487,7 +474,7 @@ cd_app perf_test_hive; cd bin_sh
 ...
 ```
 
-### Geode `gfsh`
+### Run Geode `gfsh`
 
 The `run_gfsh` script logs into the locator container and starts `gfsh`. You can connect to the default locator, localhost[10334], and execture OQL queries to verify MySQL data ingested via Debezium is also captured in the Geode cluster.
 
@@ -502,7 +489,7 @@ From `gfsh`, query the `/nw/customers` and `/nw/orders` regions.
 
 ```bash
 # Connect to the default locator
-connnect
+connect
 
 # Execute OQL queries on /nw/customers and /nw/orders
 query --query="select * from /nw/customers limit 100"
@@ -547,7 +534,7 @@ SQuirreL SQL Client:
 
 ## Teardown
 
-```console
+```bash
 # Shutdown Debezium containers
 cd_docker debezium_hive_kafka
 docker-compose down
@@ -562,7 +549,7 @@ docker container prune
 
 ## References
 
-1. Debizium-Kafka Geode Connector, PadoGrid bundle, https://github.com/padogrid/bundle-geode-3n4-docker-debezium_kafka
-2. Debezium-KSQL-Kafka Geode Connector, Padogrid bundle, https://github.com/padogrid/bundle-geode-3n4-docker-debezium_ksql_kafka
+1. Debizium-Kafka Geode Connector, PadoGrid bundle, https://github.com/padogrid/bundle-geode-1-docker-debezium_kafka
+2. Debezium-KSQL-Kafka Geode Connector, Padogrid bundle, https://github.com/padogrid/bundle-geode-1-docker-debezium_ksql_kafka
 3. Apache Hive, https://hive.apache.org
 4. Apache Hive GitHub, https://github.com/apache/hive

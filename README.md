@@ -14,7 +14,7 @@ install_bundle -download bundle-geode-1-docker-debezium_hive_kafka
 
 This use case ingests data changes made in the MySQL database into a Geode cluster via Kafka connectors and also integrates Apache Hive for querying Kafka topics as external tables and views. It extends [the original Debezium-Kafka bundle](https://github.com/padogrid/bundle-geode-1-docker-debezium_kafka) with Docker compose, Apache Hive, and  the North Wind mock data for `customers` and `orders` tables. It includes the MySQL source connector and the `geode-addon` Debezium sink connectors.
 
-![Debezium-Hive-Kafka Diagram](images/debezium-hive-kafka.jpg)
+![Debezium-Hive-Kafka Diagram](images/geode-debezium-hive-kafka.jpg)
 
 ## Required Software
 

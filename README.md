@@ -487,25 +487,27 @@ cd_app perf_test_hive; cd bin_sh
 ...
 ```
 
-### Desktop
+### Geode `gfsh`
 
-You can also install the desktop app, browse and query the map contents. The build_app script configures and deploys all the necessary files for this demo.
+The `run_gfsh` script logs into the locator container and starts `gfsh`. You can connect to the default locator, localhost[10334], and execture OQL queries to verify MySQL data ingested via Debezium is also captured in the Geode cluster.
 
-```console
-create_app -app desktop
-cd_app desktop; cd bin_sh
-./build_app
+Login to `gfsh`:
+
+```bash
+cd_docker debezium_hive_kafka; cd bin_sh
+./run_gfsh
 ```
 
-Run the desktop and login with your user ID and the default locator of localhost:5701. Password is not required.
+From `gfsh`, query the `/nw/customers` and `/nw/orders` regions.
 
-```console
-cd_app desktop; cd geode-desktop_<version>/bin_sh
-./desktop
+```bash
+# Connect to the default locator
+connnect
+
+# Execute OQL queries on /nw/customers and /nw/orders
+query --query="select * from /nw/customers limit 100"
+query --query="select * from /nw/orders limit 100"
 ```
-
-![Desktop Screenshot](https://github.com/padogrid/bundle-geode-3n4-docker-debezium_ksql_kafka/blob/master/images/desktop-nw-orders.jpg?raw=true)
-
 
 ### JDBC Browser
 

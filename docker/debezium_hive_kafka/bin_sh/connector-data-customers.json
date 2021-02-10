@@ -1,0 +1,21 @@
+{
+    "name": "customers-sink",
+    "config": {
+        "connector.class": "org.apache.geode.addon.kafka.debezium.DebeziumKafkaSinkConnector",
+        "tasks.max": "1",
+        "topics": "customers",
+        "gemfirePropertyFile": "/padogrid/etc/client-gemfire.properties",
+        "gemfire.cache-xml-file": "/padogrid/etc/client-cache.xml",
+        "region": "/nw/customers",
+        "smt.enabled": false,
+        "debug.enabled": true,
+        "delete.enabled": true,
+        "key.class": "java.lang.String",
+
+        "key.column.names": "customerId",
+        "key.field.names": "customerId",
+        "value.class": "org.apache.geode.addon.demo.nw.data.Customer",
+        "value.column.names": "customerId, address, city, companyName, contactName, contactTitle, country, fax, phone, postalCode, region",
+        "value.field.names": "customerId, address, city, companyName, contactName, contactTitle, country, fax, phone, postalCode, region"
+     }
+}

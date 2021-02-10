@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+if [ "$HELP" == "true" ]; then
+   echo "Usage:"
+   echo "   ./$EXECUTABLE [-clean] [-?]"
+   echo ""
+   echo "   Copies the geode jar files to the 'padogrid' directory which is mounted"
+   echo "   by the Docker Geode connector container."
+   echo ""
+   echo "Default: ./$EXECUTABLE"
+   echo ""
+   exit
+fi
+
+pushd $APP_DIR > /dev/null
+
+# Change Geode version number cache-client.xml
+VERSION_NUMBER="1.0"
+
+sed -i${__SED_BACKUP} 's/cache-.*.xsd/cache-'${VERSION_NUMBER}'.xsd/' padogrid/etc/client-cache.xml
+
+# Copy the geode and geode-addon jar files
+if [ ! -d padogrid/lib ]; then
+   mkdir -p padogrid/lib
+fi
+if [ ! -d padogrid/plugins ]; then
+   mkdir -p padogrid/plugins
+fi
+if [ ! -d padogrid/log ]; then
+   mkdir -p padogrid/log
+fi
+if [ ! -d padogrid/etc ]; then
+   mkdir -p padogrid/etc
+fi
+
+# Collect JDBC driver dependencies into padogrid/lib/jdbc
+mvn package
+cp $GEODE_HOME/lib/*.jar padogrid/lib/
+cp $PADOGRID_HOME/geode/lib/geode-addon-common*.jar padogrid/lib/
+cp $PADOGRID_HOME/geode/lib/geode-addon-core*.jar padogrid/lib/
+cp $PADOGRID_HOME/geode/plugins/geode-addon-core*.jar padogrid/plugins/
+
+popd > /dev/null
+
+#
+# Create my_network
+#
+if [ "$(docker network ls | grep my_network | awk '{print $2}')" != "my_network" ]; then
+   docker network create -d bridge my_network
+fi
+
+#
+# Display build information
+#
+echo ""
+echo "Workspace: $PADOGRID_WORKSPACE"
+echo ""
+echo "Build complete"
+echo ""

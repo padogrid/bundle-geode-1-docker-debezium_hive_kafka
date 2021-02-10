@@ -1,0 +1,28 @@
+<?xml	version="1.0"	encoding="UTF-8"?>
+<client-cache xmlns="http://geode.apache.org/schema/cache"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://geode.apache.org/schema/cache
+		http://geode.apache.org/schema/cache/cache-1.0.xsd"
+	version="1.0">
+	<pool name="serverPool">
+		 <locator host="host.docker.internal" port="10334" />
+	</pool>
+	<region-attributes id="clientAttributes"
+		pool-name="serverPool" refid="PROXY" />
+	
+	<!-- Regions used by test_group -prop ../etc/group-factory.properties
+	     and the Pado app. -->
+	<region name="nw" refid="clientAttributes">
+		<region name="categories" refid="clientAttributes"></region>
+		<region name="customers" refid="clientAttributes"></region>
+		<region name="employees" refid="clientAttributes"></region>
+		<region name="employee_territories" refid="clientAttributes"></region>
+		<region name="orders" refid="clientAttributes"></region>
+		<region name="order_details" refid="clientAttributes"></region>
+		<region name="products" refid="clientAttributes"></region>
+		<region name="regions" refid="clientAttributes"></region>
+		<region name="shippers" refid="clientAttributes"></region>
+		<region name="suppliers" refid="clientAttributes"></region>
+		<region name="territories" refid="clientAttributes"></region>
+	</region>
+</client-cache>

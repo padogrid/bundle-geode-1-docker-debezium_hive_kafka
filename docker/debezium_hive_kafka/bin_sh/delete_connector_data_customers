@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+CONNECT_URL=http://localhost:8083/connectors
+curl -X DELETE $CONNECT_URL/customers-sink

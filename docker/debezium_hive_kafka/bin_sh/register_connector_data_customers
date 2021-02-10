@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+curl -X POST -H "Content-Type: application/json" -d @connector-data-customers.json http://localhost:8083/connectors
+echo

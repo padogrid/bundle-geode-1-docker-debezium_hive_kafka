@@ -24,9 +24,12 @@ plugins
 # PadoGrid workspace directories
 apps
 clusters
-docker
+#docker
 k8s
 pods
+
+# Geode specifics
+*.gfs
 
 # Bundle specifics
 archive
@@ -35,3 +38,5 @@ lib
 desktop
 setenv.sh0
 build
+*.xml0
+docker/geode

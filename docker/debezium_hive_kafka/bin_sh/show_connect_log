@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker-compose exec connect /bin/bash -c "tail -f /kafka/logs/connect-service.log"
+

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker run --rm --tty --network my_network confluentinc/cp-kafkacat kafkacat -b kafka:9092 -L |grep topic

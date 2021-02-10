@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "" ]; then
+   echo >&2 "ERROR: Topic is not specified. Command aborted."
+   exit 1
+fi
+
+docker run --rm --tty --network my_network confluentinc/cp-kafkacat kafkacat -b kafka:9092 -t $1

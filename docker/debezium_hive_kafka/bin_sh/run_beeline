@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+docker-compose exec hive  /bin/bash -c "\$HIVE_HOME/bin/beeline -u jdbc:hive2://localhost:10000"

@@ -489,6 +489,12 @@ then set the APP_RESULT_VIEWER  to "external" and run the queries again.
 set variable --name=APP_RESULT_VIEWER --value=“external”
 ```
 
+Quit `gfsh`:
+
+```
+quit
+```
+
 ### JDBC Browser
 
 To browse Kafka stream data using Hive via JDBC, add all the jar files in the `padogrid/lib/jdbc` directory in the class path and configure your client with the following.

@@ -158,6 +158,7 @@ docker-compose up
 
 Execute `init_all` which performs the following:
 
+- Place the included `cache.xml` file to the Geode docker cluster. This file configures Geode with co-located data. You can use the included Power BI files to generate reports by executing OQL. See details in the [Power BI](#power-bi)  section.
 - Create the `nw` database and grant all privileges to the user `debezium`:
 - Copy the Kafka handler jar file to HDFS. It is required for executing queries with joins.
 
@@ -530,6 +531,27 @@ padogrid/lib/jdbc
 SQuirreL SQL Client:
 
 ![SQuirreL SQL Client](images/hive-squirrel-client.jpg)
+
+## Power BI
+
+This bundle includes the following Power BI files for generating reports by executing OQL queries using the Geode/GemFire REST API.
+
+```bash
+cd_docker debezium_hive_kafka
+tree etc/powerbi
+```
+
+Output:
+
+```console
+etc/powerbi
+├── customer-orders.pbix
+└── nw.pbix
+```
+
+The included `*.pbix` files are identical to the ones found in the [Power BI bundle](https://github.com/padogrid/bundle-geode-1-app-perf_test_powerbi-cluster-powerbi). For Power BI instructions, follow the link below.
+
+https://github.com/padogrid/bundle-geode-1-app-perf_test_powerbi-cluster-powerbi#loading-pbix-files
 
 ## Teardown
 

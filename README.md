@@ -12,16 +12,16 @@ install_bundle -download bundle-geode-1-docker-debezium_hive_kafka
 
 ## Use Case
 
-This use case ingests data changes made in the MySQL database into a Geode cluster via Kafka connectors and also integrates Apache Hive for querying Kafka topics as external tables and views. It extends [the original Debezium-Kafka bundle](https://github.com/padogrid/bundle-geode-1-docker-debezium_kafka) with Docker compose, Apache Hive, and  the North Wind mock data for `customers` and `orders` tables. It includes the MySQL source connector and the `geode-addon` Debezium sink connectors.
+This use case ingests data changes made in the MySQL database into a Geode cluster via Kafka connectors and also integrates Apache Hive for querying Kafka topics as external tables and views. It extends [the original Debezium-Kafka bundle](https://github.com/padogrid/bundle-geode-1-docker-debezium_kafka) with Docker compose, Apache Hive, and  the Northwind mock data for `customers` and `orders` tables. It includes the MySQL source connector and the `geode-addon` Debezium sink connectors.
 
 ![Debezium-Hive-Kafka Diagram](images/geode-debezium-hive-kafka.jpg)
 
 ## Required Software
 
+- PadoGrid 0.9.5-SNAPSTHOT+ (02/11/2021)
 - Docker
 - Docker Compose
-- Maven
-- PadoGrid 0.9.5-SNAPSTHOT+ (02/10/2021)
+- Maven 3.x
 
 ## Optional Software
 
@@ -50,9 +50,6 @@ padogrid
 ├── lib
 │   ├── ...
 │   ├── geode-addon-core-0.9.5-SNAPSHOT.jar
-│   ├── geode-common-1.13.1.jar
-│   ├── geode-connectors-1.13.1.jar
-│   ├── geode-core-1.13.1.jar
 │   ├── ...
 │   ├── jdbc
 │   │   ├── commons-logging-1.2.jar
@@ -114,9 +111,10 @@ Replace `host.docker.internal` in `client-cache.xml` with your host IP address.
    ...
 </client-cache>
 ```
-## Creating `perf_test` app
 
-Create and build `perf_test` for ingesting mock data into MySQL:
+## Creating `perf_test_hive` app
+
+Create and build `perf_test_hive` for ingesting mock data into MySQL:
 
 ```bash
 create_app -app perf_test -name perf_test_hive
@@ -453,27 +451,6 @@ The last command should display the connectors that we registered previously.
 ]
 ```
 
-### View Map Contents
-
-To view the map contents, run the `read_cache` command as follows:
-
-```bash
-cd_app perf_test_hive; cd bin_sh
-./read_cache nw/customers
-./read_cache nw/orders
-```
-
-**Output:**
-
-```console
-...
-        [address=Suite 579 23123 Drew Harbor, Coleburgh, OR 54795, city=Port Danica, companyName=Gulgowski-Weber, contactName=Howell, contactTitle=Forward Marketing Facilitator, country=Malaysia, customerId=000000-0878, fax=495.815.0654, phone=1-524-196-9729 x35639, postalCode=21468, region=ME]
-        [address=74311 Hane Trace, South Devonstad, IA 99977, city=East Timmyburgh, companyName=Schulist-Heidenreich, contactName=Adams, contactTitle=Education Liaison, country=Djibouti, customerId=000000-0233, fax=074.842.7598, phone=959-770-3197 x7440, postalCode=68067-2632, region=NM]
-        [address=22296 Toshia Hills, Lake Paulineport, CT 65036, city=North Lucius, companyName=Howe-Sporer, contactName=Bashirian, contactTitle=Human Construction Assistant, country=Madagascar, customerId=000000-0351, fax=(310) 746-2694, phone=284.623.1357 x04788, postalCode=73184, region=IA]
-        [address=Apt. 531 878 Rosalia Common, South So, WV 38349, city=New Marniburgh, companyName=Hintz-Muller, contactName=Beier, contactTitle=Banking Representative, country=Tuvalu, customerId=000000-0641, fax=288-872-6542, phone=(849) 149-9890, postalCode=81995, region=MI]
-...
-```
-
 ### Run Geode `gfsh`
 
 The `run_gfsh` script logs into the locator container and starts `gfsh`. You can connect to the default locator, localhost[10334], and execture OQL queries to verify MySQL data ingested via Debezium is also captured in the Geode cluster.
@@ -490,6 +467,10 @@ From `gfsh`, query the `/nw/customers` and `/nw/orders` regions.
 ```bash
 # Connect to the default locator
 connect
+
+# View region sizes
+describe region --name=/nw/customers
+describe region --name=/nw/orders
 
 # Execute OQL queries on /nw/customers and /nw/orders
 query --query="select * from /nw/customers limit 100"

@@ -6,7 +6,7 @@ EXECUTABLE="`basename $0`"
 
 if [ "$HELP" == "true" ]; then
    echo "Usage:"
-   echo "   ./$EXECUTABLE [-clean] [-?]"
+   echo "   ./$EXECUTABLE [-?]"
    echo ""
    echo "   Copies the geode jar files to the 'padogrid' directory which is mounted"
    echo "   by the Docker Geode connector container."
@@ -18,7 +18,7 @@ fi
 
 pushd $APP_DIR > /dev/null
 
-# Change Geode version number cache-client.xml
+# Change Geode version number in cache-client.xml
 VERSION_NUMBER="1.0"
 
 sed -i${__SED_BACKUP} 's/cache-.*.xsd/cache-'${VERSION_NUMBER}'.xsd/' padogrid/etc/client-cache.xml
@@ -40,7 +40,6 @@ fi
 # Collect JDBC driver dependencies into padogrid/lib/jdbc
 mvn package
 cp $GEODE_HOME/lib/*.jar padogrid/lib/
-cp $PADOGRID_HOME/geode/lib/geode-addon-common*.jar padogrid/lib/
 cp $PADOGRID_HOME/geode/lib/geode-addon-core*.jar padogrid/lib/
 cp $PADOGRID_HOME/geode/plugins/geode-addon-core*.jar padogrid/plugins/
 

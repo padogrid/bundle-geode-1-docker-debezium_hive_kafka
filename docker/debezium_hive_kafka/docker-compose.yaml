@@ -8,6 +8,8 @@ services:
       - 3888:3888
   kafka:
     image: debezium/kafka:${DEBEZIUM_VERSION}
+    depends_on:
+      - zookeeper
     ports:
       - 9092:9092
     links:
@@ -24,6 +26,9 @@ services:
       - MYSQL_PASSWORD=mysqlpw
   connect:
     image: debezium/connect:${DEBEZIUM_VERSION}
+    depends_on:
+      - kafka
+      - mysql
     ports:
       - 8083:8083
       - 9100:9100
@@ -44,6 +49,9 @@ services:
       - CLASSPATH=/padogrid/plugins/*:/padogrid/lib/*
   hive:
     image: javapark07/hive:${HIVE_VERSION}-derby
+    depends_on:
+      - kafka
+      - connect
     ports:
       - 10000:10000
     links:

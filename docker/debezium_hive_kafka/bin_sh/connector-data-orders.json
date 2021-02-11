@@ -11,8 +11,8 @@
         "debug.enabled": true,
         "delete.enabled": true,
         "key.class": "java.lang.String",
-        "key.column.names": "orderId",
-        "key.field.names": "orderId",
+        "key.column.names": "orderId,customerId",
+        "key.field.names": "orderId,customerId",
         "value.class": "org.apache.geode.addon.demo.nw.data.Order",
         "value.column.names": "orderId, customerId, employeeId, freight, orderDate, requiredDate, shipAddress, shipCity, shipCountry, shipName, shipPostalCode, shipRegion, shipVia, shippedDate",
         "value.field.names": "orderId, customerId, employeeId, freight, orderDate, requiredDate, shipAddress, shipCity, shipCountry, shipName, shipPostalCode, shipRegion, shipVia, shippedDate"

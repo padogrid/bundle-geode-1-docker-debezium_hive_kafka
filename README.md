@@ -477,6 +477,18 @@ query --query="select * from /nw/customers limit 100"
 query --query="select * from /nw/orders limit 100"
 ```
 
+If you get a query error message similart to the following,
+
+```gfsh
+Computed ColSize=0 Set RESULT_VIEWER to external. This uses the 'less' command (with horizontal scrolling) to see wider results
+```
+
+then set the APP_RESULT_VIEWER  to "external" and run the queries again.
+
+```gfsh
+set variable --name=APP_RESULT_VIEWER --value=“external”
+```
+
 ### JDBC Browser
 
 To browse Kafka stream data using Hive via JDBC, add all the jar files in the `padogrid/lib/jdbc` directory in the class path and configure your client with the following.

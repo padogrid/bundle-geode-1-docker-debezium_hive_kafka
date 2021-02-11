@@ -406,7 +406,7 @@ Run join query (the same join query that fails to return results in BeeLine):
 
 ```sql
 use nw;
-select c.customerid,c.address,o.orderid,o.customerid,o.freight
+select c.customerid,c.address,o.orderid,o.customerid,o.freight \
 from customers c \
 inner join orders o \
 on (c.customerid=o.customerid) order by c.customerid,o.orderid limit 10;

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+PORT=8090
+
+
+if [ ! -d $APP_DIR/padogrid/nifi/data ]; then
+  mkdir $APP_DIR/padogrid/nifi/data/json
+fi
+docker run --rm -d --name nifi -p $PORT:8080 \
+  --network debezium_ksql_kafka_default \
+  --volume $APP_DIR/padogrid:/padogrid/ \
+  apache/nifi:latest
+
+echo "NiFi container started. This may take some time to start."
+echo "      URL: http://localhost:$PORT/nifi/"
+echo "Templates: ../etc/nifi"

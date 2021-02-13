@@ -604,6 +604,10 @@ padogrid/nifi/data/json/
 cd_docker debezium_hive_kafka
 docker-compose down
 
+# Stop NiFi
+cd_docker debezium_ksql_kafka; cd bin_sh
+./stop_nifi
+
 # Shutdown Geode containers
 cd_docker geode
 docker-compose down

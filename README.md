@@ -158,7 +158,7 @@ docker-compose up
 
 Execute `init_all` which performs the following:
 
-- Place the included `cache.xml` file to the Geode docker cluster. This file configures Geode with co-located data. You can use the included Power BI files to generate reports by executing OQL. See details in the [Power BI](#power-bi)  section.
+- Place the included `cache.xml` file to the Geode docker cluster. This file configures Geode with co-located data. You can use the included Power BI files to generate reports by executing OQL. See details in the [Power BI](#10-power-bi)  section.
 - Create the `nw` database and grant all privileges to the user `debezium`:
 - Copy the Kafka handler jar file to HDFS. It is required for executing queries with joins.
 

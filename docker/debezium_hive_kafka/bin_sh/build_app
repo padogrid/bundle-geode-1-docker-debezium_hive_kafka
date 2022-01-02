@@ -40,7 +40,9 @@ fi
 # Collect JDBC driver dependencies into padogrid/lib/jdbc
 mvn package
 cp $GEODE_HOME/lib/*.jar padogrid/lib/
+cp $PADOGRID_HOME/lib/padogrid-common*.jar padogrid/lib/
 cp $PADOGRID_HOME/geode/lib/geode-addon-core*.jar padogrid/lib/
+# Test jars
 cp $PADOGRID_HOME/geode/plugins/geode-addon-core*.jar padogrid/plugins/
 
 popd > /dev/null

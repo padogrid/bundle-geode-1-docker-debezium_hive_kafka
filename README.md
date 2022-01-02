@@ -562,7 +562,13 @@ cd_docker debezium_ksql_kafka; cd bin_sh
 ./start_nifi
 ```
 
-URL: http://localhost:8090/nifi
+URL: https://localhost:8443/nifi
+
+Run the following to get the generated user name and password from the log file.
+
+```bash
+docker logs nifi |grep -i generated
+```
 
 Once started, from the browser, import the following template file.
 

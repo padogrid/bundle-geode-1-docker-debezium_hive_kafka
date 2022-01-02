@@ -29,6 +29,18 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 
 ## Building Demo
 
+:pencil2: This bundle builds the demo enviroment based on the Geode version in your workspace. Make sure your workspace has been configured with the desired version before building the demo environment.
+
+Before you begin, make sure you are in a Geode product context by switching into a Geode cluster. You can create a Geode cluster if it does not exist as shown below.
+
+```bash
+# Create the default cluster named, 'mygeode'
+make_cluster -product geode
+
+# Switch to the 'mygeode' cluster to set the product context
+switch_cluster mygeode
+```
+
 We must first build the demo by running the `build_app` command as shown below. This command copies the Geode and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode Debezium Kafka connector can include them in its class path. It also downloads the Hive JDBC driver jar and its dependencies in the `padogrid/lib/jdbc` directory.
 
 ```bash
@@ -136,7 +148,7 @@ Set user name and password as follows:
                 <property name="connection.password">dbz</property>
 ```
 
-## Starting Docker Containers
+## Startup Sequence
 
 ### 1. Start Geode
 

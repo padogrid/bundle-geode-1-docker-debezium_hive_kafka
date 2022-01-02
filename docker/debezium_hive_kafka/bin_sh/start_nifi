@@ -16,5 +16,8 @@ docker run --rm -d --name nifi -p $PORT:8080 \
   apache/nifi:latest
 
 echo "NiFi container started. This may take some time to start."
-echo "      URL: http://localhost:$PORT/nifi/"
+echo -e "      URL: ${CUrl}https://localhost:$PORT/nifi/${CNone}"
 echo "Templates: ../etc/nifi"
+echo ""
+echo "Execute the following to get the generated user name and password from the log file."
+echo "   docker logs nifi |grep -i generated"

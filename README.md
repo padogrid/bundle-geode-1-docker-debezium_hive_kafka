@@ -569,7 +569,7 @@ https://github.com/padogrid/bundle-geode-1-app-perf_test_powerbi-cluster-powerbi
 This bundle also includes NiFi, which can be started as follows.
 
 ```bash
-cd_docker debezium_ksql_kafka; cd bin_sh
+cd_docker debezium_hive_kafka; cd bin_sh
 ./start_nifi
 ```
 
@@ -584,7 +584,7 @@ docker logs nifi |grep -i generated
 Once started, from the browser, import the following template file.
 
 ```bash
-cd_docker debezium_ksql_kafka
+cd_docker debezium_hive_kafka
 cat etc/nifi/template-Kafka_Live_Archive.xml
 ```
 
@@ -600,7 +600,7 @@ Template upload steps:
 The *Kafka Live Archive* group generates JSON files in the `padogrid/nifi/data/json` directory upon receipt of Debezium events from the Kafka topics, `customers` and `orders`. Each file represents a Debezium event containing a database CDC record. Run the `perf_test` app again to generate Kafka events.
 
 ```bash
-cd_docker debezium_ksql_kafka; cd bin_sh
+cd_docker debezium_hive_kafka; cd bin_sh
 tree padogrid/nifi/data/json/
 ```
 Output:

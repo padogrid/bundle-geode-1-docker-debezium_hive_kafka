@@ -564,6 +564,22 @@ The included `*.pbix` files are identical to the ones found in the [Power BI bun
 
 https://github.com/padogrid/bundle-geode-1-app-perf_test_powerbi-cluster-powerbi#loading-pbix-files
 
+#### 10.1. ODBC
+
+If you want to create reports using the Hive data, then you can download and install Microsoft Hive ODBC Driver from the following link.
+
+https://www.microsoft.com/en-us/download/details.aspx?id=40886
+
+Once installed, add a Hive DSN with the following configuration.
+
+- Host(s): localhost
+- Port: 10000
+- Database: default
+- Authentication/Mechanism: User Name
+
+From Power BI, select *Get Data/Other/ODBC* and select the Hive ODBC DSN. If it prompts for user name and password, enter any letters to login.
+
+
 ### 11. Run NiFi
 
 This bundle also includes NiFi, which can be started as follows.

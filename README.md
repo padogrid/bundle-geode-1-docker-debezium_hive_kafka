@@ -564,9 +564,9 @@ The included `*.pbix` files are identical to the ones found in the [Power BI bun
 
 https://github.com/padogrid/bundle-geode-1-app-perf_test_powerbi-cluster-powerbi#loading-pbix-files
 
-#### 10.1. ODBC
+#### 10.1. Hive ODBC Driver
 
-If you want to create reports using the Hive data, then you can download and install Microsoft Hive ODBC Driver from the following link.
+If you want to create reports using the Hive data, then download and install Microsoft Hive ODBC Driver from the following link.
 
 https://www.microsoft.com/en-us/download/details.aspx?id=40886
 

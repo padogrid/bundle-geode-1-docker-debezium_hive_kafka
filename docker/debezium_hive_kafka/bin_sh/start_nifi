@@ -4,20 +4,22 @@ SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 EXECUTABLE="`basename $0`"
 
-PORT=8443
+HTTP_PORT=8089
+HTTPS_PORT=8443
 
 
 if [ ! -d $APP_DIR/padogrid/nifi/data ]; then
-  mkdir $APP_DIR/padogrid/nifi/data/json
+  mkdir -p $APP_DIR/padogrid/nifi/data/json
 fi
-docker run --rm -d --name nifi -p $PORT:8443 \
-  --network debezium_ksql_kafka_default \
+docker run --rm -d --name nifi -p $HTTPS_PORT:8443 -p $HTTP_PORT:8080 \
+  --network my_network \
   --volume $APP_DIR/padogrid:/padogrid/ \
   apache/nifi:latest
 
 echo "NiFi container started. This may take some time to start."
-echo -e "      URL: ${CUrl}https://localhost:$PORT/nifi/${CNone}"
+echo -e "      URL: ${CUrl}http://localhost:$HTTP_PORT/nifi/${CNone}"
+echo -e "      URL: ${CUrl}https://localhost:$HTTPS_PORT/nifi/${CNone}"
 echo "Templates: ../etc/nifi"
 echo ""
-echo "Execute the following to get the generated user name and password from the log file."
+echo "For HTTPS, execute the following to get the generated user name and password from the log file."
 echo "   docker logs nifi |grep -i generated"

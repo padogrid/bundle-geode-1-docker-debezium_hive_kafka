@@ -18,7 +18,6 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 
 ## Required Software
 
-- PadoGrid 0.9.5-SNAPSTHOT+ (02/11/2021)
 - Docker
 - Docker Compose
 - Maven 3.x

@@ -13,6 +13,9 @@ buildNumber.properties
 # vi
 *.swp
 
+# Jupyter
+.ipynb_checkpoints
+
 # PadoGrid workspace
 /.addonenv.sh
 /initenv.sh

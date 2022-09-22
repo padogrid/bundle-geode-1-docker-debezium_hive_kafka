@@ -46,7 +46,7 @@ switch_cluster mygeode
 We must first build the demo by running the `build_app` command as shown below. This command copies the Geode and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode Debezium Kafka connector can include them in its class path. It also downloads the Hive JDBC driver jar and its dependencies in the `padogrid/lib/jdbc` directory.
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./build_app
 ```
 
@@ -63,7 +63,7 @@ padogrid
 │   └── client-cache.xml
 ├── lib
 │   ├── ...
-│   ├── geode-addon-core-0.9.5-SNAPSHOT.jar
+│   ├── geode-addon-core-0.9.21.jar
 │   ├── ...
 │   ├── jdbc
 │   │   ├── commons-logging-1.2.jar
@@ -81,9 +81,11 @@ padogrid
 │   │   ├── libthrift-0.9.3.jar
 │   │   └── slf4j-api-1.7.10.jar
 │   ├── ...
+│   ├── padogrid-common-0.9.21.jar
+│   ├── ...
 ├── log
 └── plugins
-    └── geode-addon-core-0.9.5-SNAPSHOT-tests.jar
+    └── geode-addon-core-0.9.21.jar
 ```
 
 ## Creating Geode Docker Containers
@@ -131,8 +133,8 @@ Replace `host.docker.internal` in `client-cache.xml` with your host IP address.
 Create and build `perf_test_hive` for ingesting mock data into MySQL:
 
 ```bash
-create_app -app perf_test -name perf_test_hive
-cd_app perf_test_hive; cd bin_sh
+create_app -product geode -app perf_test -name perf_test_hive
+cd_app perf_test_hive/bin_sh
 ./build_app
 ```
 
@@ -172,19 +174,19 @@ docker-compose up
 
 Execute `init_all` which performs the following:
 
-- Place the included `cache.xml` file to the Geode docker cluster. This file configures Geode with co-located data. You can use the included Power BI files to generate reports by executing OQL. See details in the [Power BI](#10-power-bi)  section.
-- Create the `nw` database and grant all privileges to the user `debezium`:
-- Copy the Kafka handler jar file to HDFS. It is required for executing queries with joins.
+- Places the included `cache.xml` file to the Geode docker cluster. This file configures Geode with co-located data. You can use the included Power BI files to generate reports by executing OQL. See details in the [Power BI](#10-power-bi)  section.
+- Creates the `nw` database and grant all privileges to the user `debezium`:
+- Copies the Kafka handler jar file to HDFS. It is required for executing queries with joins.
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./init_all
 ```
 
 There are three (3) Kafka connectors that we need to register. The MySQL connector is provided by Debezium and the data connectors are part of the PadoGrid distribution. 
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./register_connector_mysql
 ./register_connector_data_customers
 ./register_connector_data_orders
@@ -193,14 +195,14 @@ cd_docker debezium_hive_kafka; cd bin_sh
 ### 3. Ingest mock data into the `nw.customers` and `nw.orders` tables in MySQL
 
 ```bash
-cd_app perf_test_hive; cd bin_sh
+cd_app perf_test_hive/bin_sh
 ./test_group -run -db -prop ../etc/group-factory.properties
 ```
 
 ### 4. Run Hive Beeline CLI
 
 ```
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./run_beeline
 ```
 
@@ -405,7 +407,7 @@ Quit BeeLine:
 ### 5. Watch topics
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./watch_topic customers
 ./watch_topic orders
 ```
@@ -413,7 +415,7 @@ cd_docker debezium_hive_kafka; cd bin_sh
 ### 6. Run MySQL CLI
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./run_mysql_cli
 ```
 
@@ -473,7 +475,7 @@ The `run_gfsh` script logs into the locator container and starts `gfsh`. You can
 Login to `gfsh`:
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./run_gfsh
 ```
 
@@ -588,7 +590,7 @@ From Power BI, select *Get Data/Other/ODBC* and select the Hive ODBC DSN. If it 
 This bundle also includes NiFi, which can be started as follows.
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./start_nifi
 ```
 
@@ -619,7 +621,7 @@ Template upload steps:
 The *Kafka Live Archive* group generates JSON files in the `padogrid/nifi/data/json` directory upon receipt of Debezium events from the Kafka topics, `customers` and `orders`. Each file represents a Debezium event containing a database CDC record. Run the `perf_test` app again to generate Kafka events.
 
 ```bash
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka
 tree padogrid/nifi/data/json/
 ```
 Output:
@@ -641,7 +643,7 @@ cd_docker debezium_hive_kafka
 docker-compose down
 
 # Stop NiFi
-cd_docker debezium_hive_kafka; cd bin_sh
+cd_docker debezium_hive_kafka/bin_sh
 ./stop_nifi
 
 # Shutdown Geode containers

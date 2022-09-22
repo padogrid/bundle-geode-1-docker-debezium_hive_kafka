@@ -91,7 +91,7 @@ padogrid
 Let's create a Geode cluster to run on Docker containers as follows.
 
 ```bash
-create_docker -cluster geode -host host.docker.internal
+create_docker -product geode -cluster geode -host host.docker.internal
 cd_docker geode
 ```
 

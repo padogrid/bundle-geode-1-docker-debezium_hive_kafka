@@ -41,7 +41,7 @@ Before you begin, make sure you are in a Geode product context by switching into
 
 ```bash
 # Create the default cluster named, 'mygeode'
-make_cluster -product geode
+create_cluster -product geode
 
 # Switch to the 'mygeode' cluster to set the product context
 switch_cluster mygeode

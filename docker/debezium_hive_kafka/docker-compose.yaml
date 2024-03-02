@@ -61,5 +61,5 @@ services:
 
 networks:
   default:
-    external:
-      name: my_network
+    name: my_network
+    external: true

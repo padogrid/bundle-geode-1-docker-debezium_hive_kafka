@@ -20,7 +20,7 @@ fi
 
 
 # Create nw database and grant all permissions to the user debezium
-docker exec -e MYSQL_PWD=debezium -it debezium_hive_kafka_mysql_1 /bin/bash -c \
+docker exec -e MYSQL_PWD=debezium -it debezium_hive_kafka-mysql-1 /bin/bash -c \
 "mysql -uroot -e \"GRANT ALL PRIVILEGES ON nw.* TO 'debezium'@'%'; CREATE DATABASE IF NOT EXISTS nw;\""
 echo "nw database created."
 

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-docker exec -it geode_locator_1 /bin/bash -c gfsh
+docker exec -it geode-locator-1  /bin/bash -c gfsh
 

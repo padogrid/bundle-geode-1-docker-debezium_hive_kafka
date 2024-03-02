@@ -3,7 +3,7 @@
 ---
 
 <!-- Platforms -->
-[![Host OS](https://github.com/padogrid/padogrid/wiki/images/padogrid-host-os.drawio.svg)](https://github.com/padogrid/padogrid/wiki/Platform-Host-OS)
+[![PadoGrid 1.x](https://github.com/padogrid/padogrid/wiki/images/padogrid-padogrid-1.x.drawio.svg)](https://github.com/padogrid/padogrid/wiki/Platform-PadoGrid-1.x) [![Host OS](https://github.com/padogrid/padogrid/wiki/images/padogrid-host-os.drawio.svg)](https://github.com/padogrid/padogrid/wiki/Platform-Host-OS)
 
 # Debezium-Hive-Kafka Geode Connector
 
@@ -15,7 +15,7 @@ This bundle integrates Geode with Debezium and Apache Hive for ingesting initial
 install_bundle -download bundle-geode-1-docker-debezium_hive_kafka
 ```
 
-:exclamation: If you are running this demo on WSL, make sure your workspace is on a shared folder. The Docker volume it creates will not be visible otherwise.
+❗️ If you are running this demo on WSL, make sure your workspace is on a shared folder. The Docker volume it creates will not be visible otherwise.
 
 ## Use Case
 
@@ -32,10 +32,30 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 ## Optional Software
 
 - jq
+- Power BI
+
+## Configuring Bundle Environment
+
+✏️  *This bundle builds the demo enviroment based on the Geode version in your workspace. Make sure your workspace has been configured with the desired version before building the demo environment.*
+
+```bash
+# To use Geode:
+install_padogrid -product geode
+update_padogrid -product geode
+
+# To use GemFire:
+# GemFire must be downloaded manually from the their website.
+# The install_padogrid usage provides the download link.
+install_padogrid -?
+# Upon download, install it in $PADOGRID_ENV_BASE_PATH/products directory.
+# For example, the following installs GemFire 10.1.0.
+tar -C $PADOGRID_ENV_BASE_PATH/products -xzf ~/Downloads/vmware-gemfire-10.1.0.tgz
+# Update the workspace environment with the installed GemFire version.
+update_padogrid -product gemfire
+```
 
 ## Building Demo
 
-:pencil2: This bundle builds the demo enviroment based on the Geode version in your workspace. Make sure your workspace has been configured with the desired version before building the demo environment.
 
 Before you begin, make sure you are in a Geode product context by switching into a Geode cluster. You can create a Geode cluster if it does not exist as shown below.
 
@@ -162,7 +182,7 @@ Set user name and password as follows:
 
 ```bash
 cd_docker geode
-docker-compose up
+docker compose up -d
 ```
 
 ### 2. Start Debezium
@@ -171,10 +191,10 @@ Start Zookeeper, Kafka, MySQL, Kafka Connect, Apache Hive containers:
 
 ```bash
 cd_docker debezium_hive_kafka
-docker-compose up
+docker compose up -d
 ```
 
-:exclamation: Wait till all the containers are up before executing the `init_all` script.
+❗️ Wait till all the containers are up before executing the `init_all` script.
 
 Execute `init_all` which performs the following:
 
@@ -644,7 +664,7 @@ padogrid/nifi/data/json/
 ```bash
 # Shutdown Debezium containers
 cd_docker debezium_hive_kafka
-docker-compose down
+docker compose down
 
 # Stop NiFi
 cd_docker debezium_hive_kafka/bin_sh
@@ -652,7 +672,7 @@ cd_docker debezium_hive_kafka/bin_sh
 
 # Shutdown Geode containers
 cd_docker geode
-docker-compose down
+docker compose down
 
 # Prune all stopped containers 
 docker container prune

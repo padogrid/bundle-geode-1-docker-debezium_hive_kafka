@@ -87,7 +87,7 @@ padogrid
 │   └── client-cache.xml
 ├── lib
 │   ├── ...
-│   ├── geode-addon-core-0.9.21.jar
+│   ├── geode-addon-core-1.0.0.jar
 │   ├── ...
 │   ├── jdbc
 │   │   ├── commons-logging-1.2.jar
@@ -105,11 +105,11 @@ padogrid
 │   │   ├── libthrift-0.9.3.jar
 │   │   └── slf4j-api-1.7.10.jar
 │   ├── ...
-│   ├── padogrid-common-0.9.21.jar
+│   ├── padogrid-common-1.0.0.jar
 │   ├── ...
 ├── log
 └── plugins
-    └── geode-addon-core-0.9.21-tests.jar
+    └── geode-addon-core-1.0.0-tests.jar
 ```
 
 ## Creating Geode Docker Containers

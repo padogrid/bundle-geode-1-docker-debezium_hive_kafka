@@ -42,20 +42,11 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 # To use Geode:
 install_padogrid -product geode
 update_padogrid -product geode
-
-# To use GemFire:
-# GemFire must be downloaded manually from the their website.
-# The install_padogrid usage provides the download link.
-install_padogrid -?
-# Upon download, install it in $PADOGRID_ENV_BASE_PATH/products directory.
-# For example, the following installs GemFire 10.1.0.
-tar -C $PADOGRID_ENV_BASE_PATH/products -xzf ~/Downloads/vmware-gemfire-10.1.0.tgz
-# Update the workspace environment with the installed GemFire version.
-update_padogrid -product gemfire
 ```
 
 ## Building Demo
 
+✏️  This bundle builds the demo enviroment based on the Geode version in your workspace. Make sure your workspace has been configured with the desired version before building the demo environment.
 
 Before you begin, make sure you are in a Geode product context by switching into a Geode cluster. You can create a Geode cluster if it does not exist as shown below.
 
@@ -112,44 +103,19 @@ padogrid
     └── geode-addon-core-1.0.0-tests.jar
 ```
 
+## Creating `my_network`
+
+```bash
+docker network create my_network
+```
+
 ## Creating Geode Docker Containers
 
-Let's create a Geode cluster to run on Docker containers as follows.
+iLet's create a Geode cluster to run on Docker containers with the `my_network` network we created in the previous section.
 
 ```bash
-create_docker -product geode -cluster geode -host host.docker.internal
+create_docker -product geode -cluster geode -network my_network
 cd_docker geode
-```
-
-If you are running Docker Desktop, then the host name, `host.docker.internal`, is accessible from the containers as well as the host machine. You can run the `ping` command to check the host name.
-
-```bash
-ping host.docker.internal
-```
-
-If `host.docker.internal` is not defined then you will need to use the host IP address that can be accessed from both the Docker containers and the host machine. Run `create_docker -?` or `man create_docker` to see the usage.
-
-```bash
-create_docker -?
-```
-
-If you are using a host IP other than `host.docker.internal` then you must also make the change in the Debezium Geode connector configuration file as follows.
-
-```bash
-cd_docker debezium_hive_kafka
-vi padogrid/etc/client-cache.xml
-```
-
-Replace `host.docker.internal` in `client-cache.xml` with your host IP address.
-
-```xml
-<client-cache ...>
-   ...
-    <pool name="serverPool">
-         <locator host="host.docker.internal" port="10334" />
-    </pool>
-   ...
-</client-cache>
 ```
 
 ## Creating `perf_test_hive` app
@@ -176,6 +142,27 @@ Set user name and password as follows:
                 <property name="connection.password">dbz</property>
 ```
 
+## Kafka Connect
+
+The Kafka Connect container listens on Kafka streams for database updates and converts them to Geode objects before updating the Geode cluster. Take a look at the `client-cache.xml` file which is loaded by the Kafka Connect container to connect to the Geode cluster. As you can see from below, the locator host is set to `geode-locator-1` which is the host name of the locator set by Docker Compose.
+
+```bash
+cd_docker debezium_hive_kafka
+cat padogrid/etc/client-cache.xml
+```
+
+Output:
+
+```xml
+<client-cache ...>
+   ...
+    <pool name="serverPool">
+         <locator host="geode-locator-1" port="10334" />
+    </pool>
+   ...
+</client-cache>
+```
+
 ## Startup Sequence
 
 ### 1. Start Geode
@@ -198,7 +185,7 @@ docker compose up -d
 
 Execute `init_all` which performs the following:
 
-- Places the included `cache.xml` file to the Geode docker cluster. This file configures Geode with co-located data. You can use the included Power BI files to generate reports by executing OQL. See details in the [Power BI](#10-power-bi)  section.
+- Places the included `cache.xml` file to the Geode docker cluster. This file configures Geode with co-located data. You can use the included Power BI files to generate reports by executing OQL. See details in the [Power BI](#10-run-power-bi)  section.
 - Creates the `nw` database and grant all privileges to the user `debezium`:
 - Copies the Kafka handler jar file to HDFS. It is required for executing queries with joins.
 
@@ -572,7 +559,7 @@ SQuirreL SQL Client:
 
 ![SQuirreL SQL Client](images/hive-squirrel-client.jpg)
 
-### 10. Power BI
+### 10. Run Power BI
 
 This bundle includes the following Power BI files for generating reports by executing OQL queries using the Geode/GemFire REST API.
 
@@ -673,6 +660,9 @@ cd_docker debezium_hive_kafka/bin_sh
 # Shutdown Geode containers
 cd_docker geode
 docker compose down
+
+# Remove network
+docker network rm my_network
 
 # Prune all stopped containers 
 docker container prune

@@ -105,13 +105,15 @@ padogrid
 
 ## Creating `my_network`
 
+Let's create the `my_network` network to which all containers will join.
+
 ```bash
 docker network create my_network
 ```
 
 ## Creating Geode Docker Containers
 
-iLet's create a Geode cluster to run on Docker containers with the `my_network` network we created in the previous section.
+Let's create a Geode cluster to run on Docker containers with the `my_network` network we created in the previous section.
 
 ```bash
 create_docker -product geode -cluster geode -network my_network

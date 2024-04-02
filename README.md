@@ -46,8 +46,6 @@ update_padogrid -product geode
 
 ## Building Demo
 
-✏️  This bundle builds the demo enviroment based on the Geode version in your workspace. Make sure your workspace has been configured with the desired version before building the demo environment.
-
 Before you begin, make sure you are in a Geode product context by switching into a Geode cluster. You can create a Geode cluster if it does not exist as shown below.
 
 ```bash
